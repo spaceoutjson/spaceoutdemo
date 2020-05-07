@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
 <style>
 html, body, #map {
   margin: 0;
@@ -13,35 +12,60 @@ html, body, #map {
 
 <div id="map"></div>
 
-<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet-src.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet-search@2.3.7/dist/leaflet-search.src.css" />
+<script src="https://unpkg.com/leaflet-search@2.3.7/dist/leaflet-search.src.js"></script>
+
 <script>
 var map = L.map('map');
-var layer;
+var geojsonLayer;
+var zoom;
+var searchControl;
 
 L.tileLayer('https://{s}.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoicnl2biIsImEiOiJjazl3NHZ3eTQwMmVqM2ZtdjRncWVqZW9pIn0.mxqxxHrhcb5t80E7VbE1qw', {
   attribution: '&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> '
 }).addTo(map);
 
+function fetchJSON(url) {
+  return fetch(url, {cors: true})
+    .then(function(response) {
+      return response.json();
+    });
+}
 
 function onEachFeature(feature, layer) {
   if (feature.properties)
     layer.bindPopup(Object.entries(feature.properties).map((prop) => prop.join(': ')).join('<br>'));
 }
 
-
 function updateGeoJson() {
-  if (layer) {
-    map.removeLayer(layer);
-    layer = undefined;
+  if (geojsonLayer) {
+    map.removeLayer(geojsonLayer);
+    map.removeControl(searchControl);
+    geojsonLayer = undefined;
+    searchControl = undefined;
   }
   fetch(window.location.hash.slice(1), {cors: true})
   .then((resp) => resp.json())
   .then((json) => {
-    layer = L.geoJson(json, {onEachFeature}).addTo(map);
-    map.fitBounds(layer.getBounds());
+    geojsonLayer = L.geoJson(json, {onEachFeature}).addTo(map);
+    map.fitBounds(geojsonLayer.getBounds());
+    searchControl = new L.Control.Search({
+      layer: geojsonLayer,
+      propertyName: 'NAME',
+      marker: false,
+      casesensitive: false,
+      moveToLocation: function(latlng) {
+          map.setView(latlng, 16); // set the zoom
+      }
+    }).addTo(map);
   })
   .catch(() => alert('Error loading or parsing GeoJSON'))
 }
+
 updateGeoJson();
 window.onhashchange = updateGeoJson;
+
 </script>
