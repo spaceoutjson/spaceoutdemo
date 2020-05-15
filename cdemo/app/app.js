@@ -71,12 +71,12 @@ define([
         var settings_demo = {
             name: "Demo",
             url: "https://www.arcgis.com",           // portal URL for config
-            webscene: "7bb8d0f2faea4a439c5239caccd3d6c5",   // portal item ID of the webscene
-            usagename: "BLDG_TYPE",                             // usage attribute (string)
-            floorname: "HSE_BLK_NO",                           // floor attribute (int)
-            OIDname: "OBJECTID_1",                            // objectid
-            buildingIDname: "OBJECTID",                   // building attribute (int)
-            areaname: "SHAPE_Leng",                           // area attribute (float)
+            webscene: "4c8d81f00bef44299f6bc33cad07c412",   // portal item ID of the webscene
+            usagename: "SourceFootprint",                             // usage attribute (string)
+            floorname: "HEIGHT",                           // floor attribute (int)
+            OIDname: "OBJECTID",                            // objectid
+            buildingIDname: "HEIGHT",                   // building attribute (int)
+            areaname: "ELEVATION_MIN",                           // area attribute (float)
             color: [                                        // color ramp for unique value renderer
                     [178, 171, 210, 1],                     
                     [253, 174, 97, 1],
@@ -121,7 +121,7 @@ define([
                 esriConfig.portalUrl = this.settings.url;
 
                 // fix CORS issues by adding portal url to cors enabled servers list
-                esriConfig.request.corsEnabledServers.push("http://zurich.maps.arcgis.com");
+                esriConfig.request.corsEnabledServers.push("https://www.arcgis.com");
 
                 // load scene with portal ID
                 this.scene = new WebScene({
@@ -222,7 +222,7 @@ define([
 
             getSettingsFromUser: function (settings) {
                 if (settings === "demo"){
-                    dom.byId("headerTitle").innerHTML = "c-through Demo";
+                    dom.byId("headerTitle").innerHTML = "Scene Demo";
                     return settings_demo;
                 }
             }
