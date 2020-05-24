@@ -70,13 +70,13 @@ define([
         // application settings
         var settings_demo = {
             name: "Demo",
-            url: "https://www.arcgis.com",           // portal URL for config
-            webscene: "4c8d81f00bef44299f6bc33cad07c412",   // portal item ID of the webscene
-            usagename: "SourceFootprint",                             // usage attribute (string)
-            floorname: "HEIGHT",                           // floor attribute (int)
+            url: "https://geosaurus.maps.arcgis.com",           // portal URL for config
+            webscene: "36b5b6de7eff4093b48f84070c50434c",   // portal item ID of the webscene
+            usagename: "BLDG_TYPE",                             // usage attribute (string)
+            floorname: "FEA_ID",                           // floor attribute (int)
             OIDname: "OBJECTID",                            // objectid
-            buildingIDname: "HEIGHT",                   // building attribute (int)
-            areaname: "ELEVATION_MIN",                           // area attribute (float)
+            buildingIDname: "HSE_BLK_NO",                   // building attribute (int)
+            areaname: "SHAPE_Leng",                           // area attribute (float)
             color: [                                        // color ramp for unique value renderer
                     [178, 171, 210, 1],                     
                     [253, 174, 97, 1],
